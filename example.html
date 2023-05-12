@@ -1,0 +1,111 @@
+<div id="root"></div><script src="https://unpkg.com/react@17.0.2/umd/react.development.js"></script><script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.development.js"></script><script src="https://unpkg.com/@babel/standalone@7.16.4/babel.min.js"></script>
+<script type="text/babel" data-type="module" data-presets="env,react">
+
+const {useEffect, useState} = React;
+
+const successChance = {
+  fetch: 0.95,
+  server: 0.95,
+};
+
+function mockApi (url, chance = successChance.server) {
+  // Simulate random internal server issue
+  const responseArgs = Math.random() < chance
+    ? [JSON.stringify({time: performance.now()}), {status: 200}]
+    : ['Oops', {status: 500}];
+  return new Response(...responseArgs);
+}
+
+function mockFetch (requestInfo, _, chance = successChance.fetch) {
+  return new Promise((resolve, reject) => {
+    // Simulate random network issue
+    if (Math.random() > chance) {
+      reject(new Error('Network error'));
+      return;
+    }
+    const url = typeof requestInfo === 'string' ? requestInfo : requestInfo.url;
+    setTimeout(() => resolve(mockApi(url)), 100);
+  });
+}
+
+// Return an object containing the response if successful (else an Error instance)
+async function fetchOne (url) {
+  try {
+    const response = await mockFetch(url);
+    if (!response.ok) throw new Error('Response not OK');
+    const data = await response.json();
+    return {data, error: undefined};
+  }
+  catch (ex) {
+    const error = ex instanceof Error ? ex : new Error(String(ex));
+    return {data: undefined, error};
+  }
+}
+
+async function fetchAll (urls) {
+  const data = [];
+  const errors = [];
+
+  for (const url of urls) {
+    const result = await fetchOne(url);
+    if (result.data) data.push([url, result.data]);
+    else if (result.error) {
+      // Handle this however you want
+      errors.push([url, result.error]);
+    }
+  }
+
+  return {data, errors};
+}
+
+function Example () {
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+
+      try {
+        const {data, errors} = await fetchAll([
+          'https://my.url/api/0',
+          'https://my.url/api/1',
+          'https://my.url/api/2',
+          'https://my.url/api/3',
+          'https://my.url/api/4',
+          'https://my.url/api/5',
+          'https://my.url/api/6',
+          'https://my.url/api/7',
+          'https://my.url/api/8',
+          'https://my.url/api/9',
+        ]);
+        setData(data);
+      }
+      catch (ex) {
+        console.error(ex);
+      }
+
+      setLoading(false);
+    };
+    fetchData();
+  }, []);
+
+  return (
+    <div>
+      <div>Loading: {loading ? '...' : 'done'}</div>
+      <ul>
+        {
+          data.map(([url, {time}]) => (<li
+            key={url}
+            style={{fontFamily: 'monospace'}}
+          >{url} - {time}</li>))
+        }
+      </ul>
+    </div>
+  );
+}
+
+ReactDOM.render(<Example />, document.getElementById('root'));
+
+</script>
+Return to post

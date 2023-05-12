@@ -1,3 +1,7 @@
+/* These styles are the global styles for the entire application. 
+They are loaded into the application via the pages/_app.js file. */
+
+
 html,
 body {
   padding: 0;
@@ -15,11 +19,6 @@ a {
   box-sizing: border-box;
 }
 
-img {
-  max-width: 100%;
-  height: auto;
-}
-
 h1,
 h2,
 p,
@@ -32,7 +31,153 @@ ul {
   list-style: none;
 }
 
-button {
-  padding: 0.5rem 1rem;
+
+/* Search Bar Styles */
+
+.search-bar {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  height: 50px;
+  border: 1px solid grey;
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 10px;
+  width: 400px;
+  font-size: 17px;
+}
+
+
+/* List Styles */
+
+.list-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 60px;
+  border-bottom: 1px solid lightgray;
+  border-top: 1px solid lightgray;
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 10px;
+  width: 400px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.list-column-one {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+}
+
+.list-title {
+  font-size: 17px;
+  line-height: 1.5;
+}
+
+.list-image {
+  margin: 10px 15px 10px 10px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+
+}
+
+.list-arrow {
+  color: grey;
+}
+
+
+/* Recipe Detail Styles  */
+
+.recipe-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: auto;
+  margin: 0 auto;
+  padding: 10px;
+  border-radius: 10px;
+  width: auto;
+  max-width: 800px;
+}
+
+.recipe-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  background-color: lightgrey;
+  height: 50px;
+  border-radius: 10px;
+  padding-left: 20px;
+}
+
+.recipe-title {
+  font-size: 20px;
+  line-height: 1.5;
+  margin: 20px auto;
   font-weight: bold;
+}
+
+.recipe-detail-image {
+  margin-top: 30px;
+  border-radius: 50%;
+}
+
+.recipe-subtitle {
+  margin: 30px 0 20px 20px;
+  font-weight: bold;
+}
+
+.recipe-instructions {
+  margin: 30px 20px 20px 30px;
+  font-size: 17px;
+
+}
+
+.legend-bullet {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border-radius: 3px;
+  margin: 20px 20px 20px 20px;
+
+}
+
+/* Utility Styles */
+
+.flex-row { 
+  display: flex;
+  flex-direction: row;
+}
+
+.flex-col { 
+  display: flex;
+  flex-direction: column;
+}
+
+.justify-content-start {
+  justify-content: flex-start;
+}
+
+.width-100 {
+  width: 100%;
+}
+
+.align-items-center {
+  align-items: center;
+}
+
+.justify-content-center {
+  justify-content: center;
+}
+
+.flex-nowrap {
+  flex-wrap: nowrap;
 }
